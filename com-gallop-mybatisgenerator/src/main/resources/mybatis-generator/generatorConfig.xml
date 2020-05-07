@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC
+        "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+
+    <!-- !!!! Driver Class Path !!!! -->
+    <!--<classPathEntry location=""/> -->
+
+    <!-- <context id="context" targetRuntime="MyBatis3">-->
+    <context id="context" targetRuntime="MyBatis3Simple" defaultModelType="flat">
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+        <!--<plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            &lt;!&ndash; 此处的 MyMapper注意一定不能被扫描到&ndash;&gt;
+            <property name="mappers" value="tk.mybatis.mapper.common.Mapper"/>
+            &lt;!&ndash; caseSensitive 是否区分大小写，默认值 false。如果数据库区分大小写，这里就需要配置为 true，这样当表名为 USER 时，
+             会生成 @Table(name = "USER") 注解，否则使用小写 user 时会找不到表。&ndash;&gt;
+            <property name="caseSensitive" value="true"/>
+            &lt;!&ndash;forceAnnotation 是否强制生成注解，默认 false，如果设置为 true，不管数据库名和字段名是否一致，都会生成注解（包含 @Table 和 @Column）。&ndash;&gt;
+            <property name="forceAnnotation" value="true"/>
+        </plugin>-->
+        <plugin type="tk.mybatis.mapper.generator.MapperPlugin">
+            <!--这里修改成统一的Mapper父接口-->
+            <property name="mappers" value="com.gallop.utils.MyMapper"/>
+            <!-- caseSensitive 是否区分大小写，默认值 false。如果数据库区分大小写，这里就需要配置为 true，这样当表名为 USER 时，
+             会生成 @Table(name = "USER") 注解，否则使用小写 user 时会找不到表。-->
+        </plugin>
+        <plugin type="com.chrm.mybatis.generator.plugins.LombokPlugin">
+            <property name="hasLombok" value="true"/>
+        </plugin>
+
+        <commentGenerator>
+            <property name="suppressAllComments" value="false"/>
+            <property name="suppressDate" value="true"/>
+        </commentGenerator>
+
+        <!-- !!!! Database Configurations !!!! -->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/msdemo?useUnicode=true&amp;characterEncoding=utf8&amp;serverTimeZone=Asia/Shanghai;"
+                        userId="root" password="123456"/>
+
+        <!-- 是否使用bigDecimal， false可自动转化以下类型（Long, Integer, Short, etc.） -->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!-- !!!! Model Configurations !!!! -->
+        <!--生成实体类 指定包名 以及生成的地址 -->
+        <javaModelGenerator targetPackage="com.gallop.managersys.pojo" targetProject="src/main/java">
+            <property name="enableSubPackages" value="false"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- !!!! Mapper XML Configurations !!!! -->
+        <!--生成SQLMAP文件 -->
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="false"/>
+            <property name="modelOnly" value="true"/>
+        </sqlMapGenerator>
+
+        <!-- !!!! Mapper Interface Configurations !!!! -->
+        <!-- 生成mapxml对应client，也就是接口dao -->
+        <javaClientGenerator targetPackage="com.gallop.managersys.mapper" targetProject="src/main/java"
+                             type="XMLMAPPER">
+            <property name="enableSubPackages" value="false"/>
+        </javaClientGenerator>
+
+        <!-- !!!! Table Configurations !!!! -->
+
+        <table tableName="admin_user">
+            <columnOverride column="role_ids" property="roleIds"
+                            typeHandler="org.apache.ibatis.type.ArrayTypeHandler" jdbcType="VARCHAR"
+                            javaType="java.util.Arrays"/>
+        </table>
+        <table tableName="permission"></table>
+        <table tableName="role"></table>
+        <table tableName="file_storage"></table>
+        <table tableName="sys_log">
+            <columnOverride column="add_time" property="addTime"
+                            typeHandler="org.apache.ibatis.type.LocalDateTimeTypeHandler" jdbcType="OTHER"
+                            javaType="java.time.LocalDateTime"/>
+            <columnOverride column="update_time" property="updateTime"
+                            typeHandler="org.apache.ibatis.type.LocalDateTimeTypeHandler" jdbcType="OTHER"
+                            javaType="java.time.LocalDateTime"/>
+        </table>
+        <!--<table tableName="user_like_comments"></table>-->
+        <!-- <table tableName="users">
+             &lt;!&ndash; 指定是否只生成domain类，如果设置为true，只生成domain类，如果还配置了sqlMapGenerator，
+             那么在mapper XML文件中，只生成resultMap元素 &ndash;&gt;
+ &lt;!&ndash;            <property name="modelOnly" value="true"/>&ndash;&gt;
+             &lt;!&ndash; 数据库表主键 &ndash;&gt;
+             &lt;!&ndash;<generatedKey column="id" sqlStatement="Mysql" identity="true"/>&ndash;&gt;
+         </table>-->
+
+    </context>
+</generatorConfiguration>
