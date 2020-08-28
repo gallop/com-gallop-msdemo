@@ -6,7 +6,8 @@ server:
 spring:
   datasource:
     druid:
-      url:  jdbc:mysql://localhost:3306/msdemo
+      #此处serverTimeZone=Asia/Shanghai无效，需要改为 serverTimezone=CTT 才有效
+      url:  jdbc:mysql://192.168.2.125:8066/MSDEMO?useUnicode=true&characterEncoding=utf8&serverTimezone=CTT
       driver-class-name:  com.mysql.cj.jdbc.Driver
       #com.mysql.cj.jdbc.Driver com.mysql.jdbc.Driver
       username:  root
@@ -68,4 +69,7 @@ fdfs:
   #TrackerList参数,支持多个
   tracker-list:
     - 192.168.2.125:22122
+logging:
+  file:
+    path: /var/msdemo_log/logs
 
